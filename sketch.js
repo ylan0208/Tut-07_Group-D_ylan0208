@@ -32,10 +32,10 @@ function draw(){
   else if(animation == 1){
     //when animation is 1, use lerp to make lines back to original position
     for(let l of lines){
-      l.moveX = lerp(l.moveX, 0, 0.01)
+      l.moveX = lerp(l.moveX, 0, 0.04)
     }
     
-    animationVal = lerp(animationVal, 0, 0.01)
+    animationVal = lerp(animationVal, 0, 0.04)
     if(animationVal <= 0.00001){
       animationVal = 1;
       animation = 0;
@@ -58,13 +58,13 @@ class Line {
     this.moveX = 0;//move distance
    
     this.initData = {
-      tx: tx,
-      ty: ty,
+      tx: tx,//translate x value
+      ty: ty,//translate y value
       leng: leng, //length
-      xOff: xOff,
+      xOff: xOff,//x offset
       ys: ys, //y scale
       ang: ang, // angle
-      color: color,
+      color: color,//colour
       sw: sw, //strokeweight
     }
     //save initial properties for later animation
@@ -159,4 +159,3 @@ function setLines(){
     drawLines(settings);//Call drawLines() to draw the lines
   }
 }
-
