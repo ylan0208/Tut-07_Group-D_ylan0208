@@ -1,7 +1,8 @@
 let lineSettings;
 let lines = []//array
 let flashY = -0.25; //for check if the animation starts
-let animation = 0;//decide current status
+let animation = 0;//current animation status
+let animationVal = 1;//use the value to decide if change to a restore animation
 
 function setup() {
   createCanvas(windowWidth, windowHeight);//Create a canvas of windowsize
@@ -19,11 +20,27 @@ function draw(){
       l.flash();
     }
     flashY += 0.003;//increase flashY
-    //when it is over 0.35, move next
-    if (flashY > 0.35) {
+    //when it is over 0.5, change next
+    if (flashY > 0.5) {
+      animation = 1;//animation status 1
       flashY = -0.28
       for (let l of lines) {
         l.spdX = -8;
+      }
+    }
+  }
+  else if(animation == 1){
+    //when animation is 1, use lerp to make lines back to original position
+    for(let l of lines){
+      l.moveX = lerp(l.moveX, 0, 0.01)
+    }
+    
+    animationVal = lerp(animationVal, 0, 0.01)
+    if(animationVal <= 0.00001){
+      animationVal = 1;
+      animation = 0;
+      for(let l of lines){
+        l.moveX = 0;
       }
     }
   }
