@@ -1,5 +1,7 @@
 let lineSettings;
 let lines = []//array
+let flashY = -0.25; //for check if the animation starts
+let animation = 0;//decide current status
 
 function setup() {
   createCanvas(windowWidth, windowHeight);//Create a canvas of windowsize
@@ -11,6 +13,20 @@ function draw(){
   for (let l of lines){
     l.display();
   }
+  if (animation == 0) {
+    //when animation == 0, lines start to move
+    for (let l of lines) {
+      l.flash();
+    }
+    flashY += 0.003;//increase flashY
+    //when it is over 0.35, move next
+    if (flashY > 0.35) {
+      flashY = -0.28
+      for (let l of lines) {
+        l.spdX = -8;
+      }
+    }
+  }
 }
 
 function windowResized(){
@@ -21,7 +37,8 @@ function windowResized(){
 class Line {
   constructor(tx, ty, leng, xOff, ys, ang, color, sw) {
 
-    this.moveX = 0;
+    this.spdX = -8;//move speed
+    this.moveX = 0;//move distance
    
     this.initData = {
       tx: tx,
@@ -37,7 +54,7 @@ class Line {
     this.init()
   }
 
-  init() {
+  init(){
     //initialise line properties
     this.tx = this.initData.tx;
     this.ty = this.initData.ty;
@@ -56,12 +73,10 @@ class Line {
     this.y1 = this.yPos
     this.x2 = leng / 2 + xOff + this.moveX
     this.y2 = this.yPos
-
   }
 
 
-  display() {
-
+  display(){
     let xOff = this.xOff * width;
     let leng = this.leng * width;
     this.yPos = width * this.ys;
@@ -79,6 +94,14 @@ class Line {
     line(this.x1, this.y1, this.x2, this.y2);
     pop();
   }
+
+  //create flash() function in class to animate each line
+  flash(){
+    if(flashY > this.ys){
+      this.moveX += this.spdX;//move distance + speed
+      this.spdX += 2;//add speed
+    }
+  } 
 }
 
 function drawLines({ x, y, angle, color, weight, lengthLeft, lengthRight, distanceStart, distanceEnd, num}) {
