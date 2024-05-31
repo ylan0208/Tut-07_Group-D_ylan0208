@@ -1,8 +1,8 @@
 let lineSettings;
 let lines = []//array
-let flashY = -0.25; //for check if the animation starts
+let flashY = -0.25; //value for check if the animation starts
 let animation = 0;//current animation status
-let animationVal = 1;//use the value to decide if change to a restore animation
+let animationVal = 1;//use the value to decide if start a restore animation
 
 function setup() {
   createCanvas(windowWidth, windowHeight);//Create a canvas of windowsize
@@ -11,6 +11,10 @@ function setup() {
 
 function draw(){
   background(246, 240, 221);//set background color as paper yellow
+  push();
+  translate(width/2,height/2);
+  scale(0.75);
+
   for (let l of lines){
     l.display();
   }
@@ -23,19 +27,20 @@ function draw(){
     //when it is over 0.5, change next
     if (flashY > 0.5) {
       animation = 1;//animation status 1
-      flashY = -0.28
+      flashY = -0.25//set flashY back to default
       for (let l of lines) {
-        l.spdX = -8;
+        l.spdX = -8;//set move speed back to default
       }
     }
   }
   else if(animation == 1){
     //when animation is 1, use lerp to make lines back to original position
     for(let l of lines){
-      l.moveX = lerp(l.moveX, 0, 0.04)
+      l.moveX = lerp(l.moveX, 0, 0.04)//make moveX go to 0
     }
     
-    animationVal = lerp(animationVal, 0, 0.04)
+    animationVal = lerp(animationVal, 0, 0.04)//let a new value, also make it go to 0
+    //when it is almost 0, the restore animation will end
     if(animationVal <= 0.00001){
       animationVal = 1;
       animation = 0;
@@ -44,6 +49,7 @@ function draw(){
       }
     }
   }
+  pop();
 }
 
 function windowResized(){
@@ -94,6 +100,7 @@ class Line {
 
 
   display(){
+    //use width to calculate every properties like length and position to realize a responsive window effect
     let xOff = this.xOff * width;
     let leng = this.leng * width;
     this.yPos = width * this.ys;
@@ -104,7 +111,7 @@ class Line {
 
     //draw the line
     push();
-    stroke(this.color);
+    stroke(random(this.moveX), random(this.moveX), random(this.moveX));//change stroke color when it move
     strokeWeight(this.sw);
     translate(this.tx * width, this.ty * width);
     rotate(this.ang);
@@ -114,9 +121,11 @@ class Line {
 
   //create flash() function in class to animate each line
   flash(){
+    //the smaller ys is, the upper position the line is in the group
+    //compare flashY with ys, when increasing flashY, the line will move from up to down
     if(flashY > this.ys){
       this.moveX += this.spdX;//move distance + speed
-      this.spdX += 2;//add speed
+      this.spdX += 2;//accelerate speed
     }
   } 
 }
@@ -128,7 +137,7 @@ function drawLines({ x, y, angle, color, weight, lengthLeft, lengthRight, distan
     strokeWeight(weight);//line weight
     let length = map(i, 0, num, lengthLeft, lengthRight);//line length
     let yOff = map(i, 0, num, distanceStart, distanceEnd);//line position on the y
-    let l = new Line(x, y, length, xOff, yOff, angle, color, weight)
+    let l = new Line(x-0.55, y-0.38, length, xOff, yOff, angle, color, weight)
     lines.push(l)
   }
 }
