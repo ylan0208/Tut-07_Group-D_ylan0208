@@ -18,10 +18,10 @@ Create a class Line and copy some features from group code drawLines() function 
 
 
 In function draw(), use if condition constructs to decide different animation stages. 
-***Stage1***: When the threshold flashY is judged to be greater than the line's attribute ys, the line will begin to move. After the line starts to move, moveX will increase according to spdX, and spdX will also increase, thus achieving the accelerated motion effect of the line.
-***Stage2***: Simply use lerp to make moveX back to 0 so that lines come back to original position.
++ ***Stage1***: When the threshold flashY is judged to be greater than the line's attribute ys, the line will begin to move. After the line starts to move, moveX will increase according to spdX, and spdX will also increase, thus achieving the accelerated motion effect of the line.
++ ***Stage2***: Simply use lerp to make moveX back to 0 so that lines come back to original position.
 
 Changes to group code:
-•	Rename **createLines()** function as **setLines()**, in order to avoid confusion.
-•	In group **drawLines()** function, replace simple line() function with a new from class **Line**: *let l = new **Line**(x-0.55, y-0.38, length, xOff, yOff, angle, color, weight)*.
-•	Remove the scale part in **windowResized()** function, use **scale()** in **function draw()** to display the artwork in the middle of the canvas.
++ Rename **createLines()** function as **setLines()**, in order to avoid confusion.
++ In group **drawLines()** function, replace simple line() function with a new from class **Line**: *let l = new **Line**(x-0.55, y-0.38, length, xOff, yOff, angle, color, weight)*.
++ Remove the scale part in **windowResized()** function, use **scale()** in **function draw()** to display the artwork in the middle of the canvas.
